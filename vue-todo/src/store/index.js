@@ -29,6 +29,11 @@ const store = {
         //headerText: 'Todo it from state'
         todoItems: storage_get.fetch()
     },
+    getters: {
+        storedtodoItems(state){
+            return state.todoItems;
+        }
+    },
     mutations: {
         addOneItem(state, todoItem) {
             console.log("[mutations] addOneItem() has called....");

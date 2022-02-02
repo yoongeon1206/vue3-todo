@@ -2,11 +2,11 @@
   <div>
       <transition-group name="list" tag="ul">
       <!-- <ul> -->
-          <li v-for="(todoItem, index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow">
+          <li v-for="(todoItem, index) in this.storedtodoItems" v-bind:key="todoItem.item" class="shadow">
               <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
-              v-on:click="toggleComplete(todoItem,index)"></i>
+              v-on:click="toggleComplete({todoItem,index})"></i>
               <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
-              <span class="removeBtn" v-on:click="removeTodo(todoItem,index)">
+              <span class="removeBtn" v-on:click="removeTodo({todoItem,index})">
                   <i class="fas fa-trash-alt"></i>
               </span>
           </li>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
     // props: ['propsdata'],
@@ -25,51 +26,61 @@ export default {
     //         todoItems: []
     //     }
     // },
+    computed: {
+      // todoItems(){
+      //   return this.$store.getters.storedtodoItems;
+      // }
+      ...mapGetters(['storedtodoItems'])
+    },
     methods: {
-        removeTodo(todoItem,index){
-            console.log(todoItem, index);
-            // 상위 컴포넌트에 정의된 removeItem 이벤트 ->removeOneItem()을 호출 
-            //this.$emit('removeItem',todoItem,index);
+        ...mapMutations({
+          removeTodo: 'removeOneItem',
+          toggleComplete: 'toggleOneItem'
+        })
+        // removeTodo(todoItem,index){
+        //     console.log(todoItem, index);
+        //     // 상위 컴포넌트에 정의된 removeItem 이벤트 ->removeOneItem()을 호출 
+        //     //this.$emit('removeItem',todoItem,index);
 
-            // mutation에 넘길때 아래와 같이 오브젝트(객체)로 묶어서 보낼 수 있다. 
-            // es6에서는 키, 밸류가 같으면 줄일 수 있다. 
-            // const obj = {
-            //   todoItem,
-            //   index
-            // };
+        //     // mutation에 넘길때 아래와 같이 오브젝트(객체)로 묶어서 보낼 수 있다. 
+        //     // es6에서는 키, 밸류가 같으면 줄일 수 있다. 
+        //     // const obj = {
+        //     //   todoItem,
+        //     //   index
+        //     // };
 
-            // store의 mutation에 정의된 removeOneItem() 함수 호출
-            // this.$store.commit('removeOneItem', todoItem, index)
+        //     // store의 mutation에 정의된 removeOneItem() 함수 호출
+        //     // this.$store.commit('removeOneItem', todoItem, index)
 
-            // 객체로 전달하는 방법 
-            //this.$store.commit('removeOneItem', obj)
+        //     // 객체로 전달하는 방법 
+        //     //this.$store.commit('removeOneItem', obj)
 
-            // 객체를 바로 보내는 방법 
-            this.$store.commit('removeOneItem', {todoItem, index})
+        //     // 객체를 바로 보내는 방법 
+        //     this.$store.commit('removeOneItem', {todoItem, index})
             
-            //브라우저 저장소
-            // localStorage.removeItem(todoItem.item);
-            // 현재 컴포넌트에 정의된 todoitems에서 하나를 지우겠다. 
-            // this.todoItems.splice(index,1);
-        },
+        //     //브라우저 저장소
+        //     // localStorage.removeItem(todoItem.item);
+        //     // 현재 컴포넌트에 정의된 todoitems에서 하나를 지우겠다. 
+        //     // this.todoItems.splice(index,1);
+        // },
         // checkbox를 클릭했을때, compoas
-        toggleComplete(todoItem,index) {
-            // 상위 컴포넌트에 정의된 toggleItem->toggleOneItem()을 호출 
-            // this.$emit('toggleItem',todoItem,index);
+        // toggleComplete(todoItem,index) {
+        //     // 상위 컴포넌트에 정의된 toggleItem->toggleOneItem()을 호출 
+        //     // this.$emit('toggleItem',todoItem,index);
 
-            // store의 mutation에 정의된 removeOneItem() 함수 호출
-            //this.$store.commit('toggleOneItem', todoItem, index)
-            this.$store.commit('toggleOneItem', {todoItem, index})
+        //     // store의 mutation에 정의된 removeOneItem() 함수 호출
+        //     //this.$store.commit('toggleOneItem', todoItem, index)
+        //     this.$store.commit('toggleOneItem', {todoItem, index})
 
-            //console.log(todoItem);
-            // todoItem.completed = !todoItem.completed; 
+        //     //console.log(todoItem);
+        //     // todoItem.completed = !todoItem.completed; 
 
-            // todoItems.completed를 업데이트 해주기 위해 삭제한후
-            // 다시 localstorage에 추가 한다. 
-            // localStorage.removeItem(todoItem.item);
-            // localStorage.setItem(todoItem.item,JSON.stringify(todoItem));
-            //localStorage.setItem(todoItem.item,JSON.stringify(todoItem));
-        }
+        //     // todoItems.completed를 업데이트 해주기 위해 삭제한후
+        //     // 다시 localstorage에 추가 한다. 
+        //     // localStorage.removeItem(todoItem.item);
+        //     // localStorage.setItem(todoItem.item,JSON.stringify(todoItem));
+        //     //localStorage.setItem(todoItem.item,JSON.stringify(todoItem));
+        // }
     },
     // vue 라이프 사이클 훅 8개중에 created 사용
     // TodoList 생성시 data(todoItems)에 localstorgage에 있는 값을 넣어준다
