@@ -54,7 +54,7 @@ export default {
   // vue 라이프 사이클 훅 8개중에 created 사용
   // TodoList 생성시 data(todoItems)에 localstorgage에 있는 값을 넣어준다
   created() {
-      //console.log('created');
+      console.log('created');
       if( localStorage.length > 0) {
           // localstorage에 데이터가 있다면, 
           for (let i=0 ; i < localStorage.length ; i++) {
