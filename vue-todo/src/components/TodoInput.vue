@@ -44,14 +44,19 @@ export default {
         //console.log(this.newTodoItem);
         // 값이 있을때 
         if (this.newTodoItem !== ''){
-          this.$emit('addTodoItem',this.newTodoItem);
+          //this.$emit('addTodoItem',this.newTodoItem);
+          this.$store.commit('addOneItem', this.newTodoItem)
+          //const text = this.newTodoItem.trim();
+          //this.$store.commit('addOneItem', text)
+          
+          this.clearInput();
           // 로컬 스토리지 저장하는 로직 
           //var obj = {completed: false, item: this.newTodoItem}
           // object를 문자열로 변환하여 브라우저 스토리지에 저장한다
           // localstorage key - this.newTodoItems : 텍스트 필드에 입력한 값 
           // localstrogage value - obj : completed 여부, 텍스트 필드에 입력한 값 
           //localStorage.setItem(this.newTodoItem,JSON.stringify(obj));
-          this.clearInput();
+          
         }else{
           //alert("input todo item for your schedule")
           this.showModal = !this.showModal;

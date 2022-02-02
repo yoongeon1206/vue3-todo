@@ -18,7 +18,7 @@
 <script>
 
 export default {
-    props: ['propsdata'],
+    // props: ['propsdata'],
     // 로컬 스토리지 데이터를 꺼내서 담을 데이터가 필요 
     // data: function(){
     //     return {
@@ -28,16 +28,38 @@ export default {
     methods: {
         removeTodo(todoItem,index){
             console.log(todoItem, index);
-            this.$emit('removeItem',todoItem,index);
+            // 상위 컴포넌트에 정의된 removeItem 이벤트 ->removeOneItem()을 호출 
+            //this.$emit('removeItem',todoItem,index);
+
+            // mutation에 넘길때 아래와 같이 오브젝트(객체)로 묶어서 보낼 수 있다. 
+            // es6에서는 키, 밸류가 같으면 줄일 수 있다. 
+            // const obj = {
+            //   todoItem,
+            //   index
+            // };
+
+            // store의 mutation에 정의된 removeOneItem() 함수 호출
+            // this.$store.commit('removeOneItem', todoItem, index)
+
+            // 객체로 전달하는 방법 
+            //this.$store.commit('removeOneItem', obj)
+
+            // 객체를 바로 보내는 방법 
+            this.$store.commit('removeOneItem', {todoItem, index})
+            
             //브라우저 저장소
-            //localStorage.removeItem(todoItem.item);
-            // 하나를 지우겠다. 
-            //this.todoItems.splice(index,1);
+            // localStorage.removeItem(todoItem.item);
+            // 현재 컴포넌트에 정의된 todoitems에서 하나를 지우겠다. 
+            // this.todoItems.splice(index,1);
         },
         // checkbox를 클릭했을때, compoas
         toggleComplete(todoItem,index) {
+            // 상위 컴포넌트에 정의된 toggleItem->toggleOneItem()을 호출 
+            // this.$emit('toggleItem',todoItem,index);
 
-            this.$emit('toggleItem',todoItem,index);
+            // store의 mutation에 정의된 removeOneItem() 함수 호출
+            //this.$store.commit('toggleOneItem', todoItem, index)
+            this.$store.commit('toggleOneItem', {todoItem, index})
 
             //console.log(todoItem);
             // todoItem.completed = !todoItem.completed; 
